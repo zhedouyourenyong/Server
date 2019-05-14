@@ -1,0 +1,7 @@
+#netty端口号配置
+servernetty:
+  ports: [8899]
+
+#日志配置
+logging:
+    path: E:\Intellij\MyIM\Log\Server
