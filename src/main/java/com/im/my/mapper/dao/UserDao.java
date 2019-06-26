@@ -11,9 +11,11 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserDao
 {
+    String TABLE_NAME = " user ";
+
     User selectByName(String name);
     void addUser(User user);
 
-    @Select({"select * from user where id=#{userId}"})
+    @Select({"select * from ",TABLE_NAME," where id=#{userId}"})
     String selectById( @Param(value = "userId") String userId);
 }
