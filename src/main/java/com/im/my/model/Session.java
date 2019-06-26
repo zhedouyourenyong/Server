@@ -1,5 +1,4 @@
-package com.im.my.session;
-
+package com.im.my.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

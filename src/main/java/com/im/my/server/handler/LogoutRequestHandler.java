@@ -2,7 +2,7 @@ package com.im.my.server.handler;
 
 import com.im.my.protocol.request.LogoutRequestPacket;
 import com.im.my.protocol.response.LogoutResponsePacket;
-import com.im.my.session.Session;
+import com.im.my.model.Session;
 import com.im.my.utils.SessionUtil;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -11,12 +11,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @ChannelHandler.Sharable
-public class LogoutResponseHandler extends SimpleChannelInboundHandler<LogoutRequestPacket>
+public class LogoutRequestHandler extends SimpleChannelInboundHandler<LogoutRequestPacket>
 {
-    private static final Logger logger= LoggerFactory.getLogger(LogoutResponseHandler.class);
-    public static final LogoutResponseHandler INSTANCE=new LogoutResponseHandler();
+    private static final Logger logger= LoggerFactory.getLogger(LogoutRequestHandler.class);
+    public static final LogoutRequestHandler INSTANCE=new LogoutRequestHandler();
 
-    private LogoutResponseHandler()
+    private LogoutRequestHandler ()
     {
     }
 

@@ -7,7 +7,7 @@ public interface Serializer
     //默认使用的序列化算法
     Serializer DEFAULT = new JsonSerializer();
 
-    //获取使用de 序列化算法
+    //获取使用的序列化算法
     byte getSerializerAlgorithm ();
 
     //将java对象转化为二进制

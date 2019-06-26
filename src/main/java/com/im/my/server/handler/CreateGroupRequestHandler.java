@@ -2,8 +2,8 @@ package com.im.my.server.handler;
 
 import com.im.my.protocol.request.CreateGroupRequestPacket;
 import com.im.my.protocol.response.CreateGroupResponsePacket;
-import com.im.my.session.Session;
-import com.im.my.utils.IdUtil;
+import com.im.my.model.Session;
+import com.im.my.utils.IDUtil;
 import com.im.my.utils.SessionUtil;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
@@ -50,7 +50,7 @@ public class CreateGroupRequestHandler extends SimpleChannelInboundHandler<Creat
             }
         }
 
-        String groupId= IdUtil.randomId();
+        String groupId= IDUtil.randomId();
         CreateGroupResponsePacket resp = new CreateGroupResponsePacket();
         resp.setGroupId(groupId);
         resp.setSuccess(true);
@@ -58,7 +58,7 @@ public class CreateGroupRequestHandler extends SimpleChannelInboundHandler<Creat
 
         channelGroup.writeAndFlush(resp);
 
-        System.out.print("群创建成功，id 为 " + resp.getGroupId() + ", ");
+        System.out.print("群创建成功，userId 为 " + resp.getGroupId() + ", ");
         System.out.println("群里面有：" + resp.getUserNameList());
 
         SessionUtil.bindChannelGroup(groupId, channelGroup);
@@ -67,7 +67,6 @@ public class CreateGroupRequestHandler extends SimpleChannelInboundHandler<Creat
     @Override
     public void exceptionCaught (ChannelHandlerContext ctx, Throwable cause) throws Exception
     {
-        ctx.close();
         logger.error(cause.getMessage(),cause);
     }
 }

@@ -2,7 +2,7 @@ package com.im.my.server.handler;
 
 import com.im.my.protocol.request.ListGroupMembersRequestPacket;
 import com.im.my.protocol.response.ListGroupMembersResponsePacket;
-import com.im.my.session.Session;
+import com.im.my.model.Session;
 import com.im.my.utils.SessionUtil;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;

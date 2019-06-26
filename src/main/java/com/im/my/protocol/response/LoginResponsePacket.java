@@ -8,11 +8,8 @@ import lombok.Data;
 public class LoginResponsePacket extends Packet
 {
     private String userId;
-
     private String userName;
-
-    private boolean success;
-
+    private Boolean success;
     private String reason;
 
     @Override

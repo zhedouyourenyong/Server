@@ -29,7 +29,7 @@ public class QuitGroupRequestHandler extends SimpleChannelInboundHandler<QuitGro
         ChannelGroup channelGroup = SessionUtil.getChannelGroup(groupId);
         channelGroup.remove(ctx.channel());
 
-        //加个 群发到群聊组的功能
+        //加个群发到群聊组的功能
         QuitGroupResponsePacket responsePacket = new QuitGroupResponsePacket();
         responsePacket.setGroupId(requestPacket.getGroupId());
         responsePacket.setSuccess(true);

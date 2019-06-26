@@ -7,10 +7,8 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 /*
-* 所以本handler用于防止客户端在未登录状态发送请求包
-* 在LoginRequestHandler中只能接接收LoginRequestPacket
+* 防止客户端在未登录状态发送非登录请求包
 * */
 
 @ChannelHandler.Sharable
@@ -23,13 +21,13 @@ public class AuthHandler extends ChannelInboundHandlerAdapter
     {
     }
 
-
     @Override
     public void channelRead (ChannelHandlerContext ctx, Object msg) throws Exception
     {
         if(!SessionUtil.hasLogin(ctx.channel()))
         {
             ctx.channel().close();
+            logger.info("未登录，关闭连接!");
         } else
         {
             ctx.pipeline().remove(this);

@@ -10,10 +10,8 @@ import java.util.List;
 @Data
 public class CreateGroupResponsePacket extends Packet
 {
-    private boolean success;
-
+    private Boolean success;
     private String groupId;
-
     private List<String> userNameList;
 
     @Override

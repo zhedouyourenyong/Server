@@ -11,22 +11,18 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-
-/*
-* 单例模式
-* */
 @ChannelHandler.Sharable
 public class PacketCodecHandler extends MessageToMessageCodec<ByteBuf, Packet>
 {
-    public static final Logger logget= LoggerFactory.getLogger(PacketCodecHandler.class);
+    public static final Logger logger= LoggerFactory.getLogger(PacketCodecHandler.class);
     public static final PacketCodecHandler INSTANCE=new PacketCodecHandler();
 
-    private PacketCodecHandler()
+    private PacketCodecHandler ()
     {
     }
 
     @Override
-    protected void encode (ChannelHandlerContext channelHandlerContext, Packet packet, List<Object> list) throws Exception
+    protected void encode (ChannelHandlerContext channelHandlerContext, Packet packet, List<Object> list)
     {
         ByteBuf buf=channelHandlerContext.alloc().ioBuffer();
         PacketCodec.INSTANCE.encode(buf,packet);
@@ -34,8 +30,17 @@ public class PacketCodecHandler extends MessageToMessageCodec<ByteBuf, Packet>
     }
 
     @Override
-    protected void decode (ChannelHandlerContext channelHandlerContext, ByteBuf byteBuf, List<Object> list) throws Exception
+    protected void decode (ChannelHandlerContext channelHandlerContext, ByteBuf byteBuf, List<Object> list)
     {
-        list.add(PacketCodec.INSTANCE.decode(byteBuf));
+        Packet requestPacket= PacketCodec.INSTANCE.decode(byteBuf);
+        if(requestPacket==null)
+            throw new NullPointerException("解码失败");
+        list.add(requestPacket);
+    }
+
+    @Override
+    public void exceptionCaught (ChannelHandlerContext ctx, Throwable cause) throws Exception
+    {
+        logger.error(cause.getMessage());
     }
 }

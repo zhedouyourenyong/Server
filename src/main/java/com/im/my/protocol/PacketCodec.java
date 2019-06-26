@@ -24,18 +24,23 @@ public class PacketCodec
     private final Map<Byte,Class<?extends Packet> > packetTypeMap;
     private final Map<Byte, Serializer> serializerMap;
 
-
-    //把这里的手动添加改成自动扫描添加
+//  自动添加?? 配置文件??
     private PacketCodec()
     {
         packetTypeMap=new HashMap<>();
         packetTypeMap.put(Command.LOGIN_REQUEST, LoginRequestPacket.class);
         packetTypeMap.put(Command.LOGOUT_REQUEST,LogoutRequestPacket.class);
         packetTypeMap.put(Command.MESSAGE_REQUEST, MessageRequestPacket.class);
+        packetTypeMap.put(Command.REGISTER_REQUEST,RegisterRequestPacket.class);
+        packetTypeMap.put(Command.SENSOR_REQUEST, SensorDataRequestPacket.class);
         packetTypeMap.put(Command.HEAT_BEAT_REQUEST,HeartBeatRequestPacket.class);
         packetTypeMap.put(Command.JOIN_GROUP_REQUEST,JoinGroupRequestPacket.class);
         packetTypeMap.put(Command.QUIT_GROUP_REQUEST,QuitGroupRequestPacket.class);
+        packetTypeMap.put(Command.ADD_FRIEND_REQUEST,AddFriendRequestPacket.class);
         packetTypeMap.put(Command.CREATE_GROUP_REQUEST, CreateGroupRequestPacket.class);
+        packetTypeMap.put(Command.DELETE_FRIEND_REQUEST,DeleteFriendRequestPacket.class);
+        packetTypeMap.put(Command.SHOW_GROUP_LIST_REQUEST,ShowGroupListRequestPacket.class);
+        packetTypeMap.put(Command.SHOW_FRIENDS_LIST_REQUEST,ShowFriendsListRequestPacket.class);
         packetTypeMap.put(Command.SEND_MESSAGE_TO_GROUP_REQUEST, GroupMessageRequestPacket.class);
         packetTypeMap.put(Command.LIST_GROUP_MEMBERS_REQUEST, ListGroupMembersRequestPacket.class);
 
@@ -45,10 +50,9 @@ public class PacketCodec
         serializerMap.put(serializer.getSerializerAlgorithm(), serializer);
     }
 
-    public static void encode(ByteBuf buf,Packet packet)
+    public void encode(ByteBuf buf,Packet packet)
     {
         byte[] bytes= Serializer.DEFAULT.serialize(packet);
-
         buf.writeInt(MAGIC_NUMBER);
         buf.writeByte(packet.getVersion());
         buf.writeByte(Serializer.DEFAULT.getSerializerAlgorithm());
@@ -59,9 +63,7 @@ public class PacketCodec
 
     public Packet decode(ByteBuf byteBuf)
     {
-        // 跳过 magic number
         byteBuf.skipBytes(4);
-        // 跳过版本号
         byteBuf.skipBytes(1);
 
         byte serializeAlgorithm = byteBuf.readByte();
@@ -82,13 +84,11 @@ public class PacketCodec
 
     private Serializer getSerializer(byte serializeAlgorithm)
     {
-
         return serializerMap.get(serializeAlgorithm);
     }
 
     private Class<? extends Packet> getRequestType(byte command)
     {
-
         return packetTypeMap.get(command);
     }
 }

@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 public class LogoutResponsePacket extends Packet
 {
-    private boolean success;
+    private Boolean success;
     private String reason;
 
 

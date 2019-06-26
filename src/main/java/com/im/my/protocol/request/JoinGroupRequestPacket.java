@@ -8,7 +8,6 @@ import lombok.Data;
 @Data
 public class JoinGroupRequestPacket extends Packet
 {
-
     private String groupId;
 
     @Override

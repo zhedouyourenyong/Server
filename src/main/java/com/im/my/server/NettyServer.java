@@ -3,6 +3,7 @@ package com.im.my.server;
 import com.im.my.codec.PacketCodecHandler;
 import com.im.my.codec.Spliter;
 import com.im.my.config.NettyConfig;
+import com.im.my.protocol.PacketCodec;
 import com.im.my.server.handler.*;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
@@ -24,7 +25,7 @@ import java.util.List;
 @Component
 public class NettyServer
 {
-    private Logger logger= LoggerFactory.getLogger(NettyServer.class);
+    private final Logger logger= LoggerFactory.getLogger(NettyServer.class);
 
     private final EventLoopGroup bossGroup =new NioEventLoopGroup();
     private final EventLoopGroup workerGroup=new NioEventLoopGroup();
@@ -38,7 +39,8 @@ public class NettyServer
     {
         try
         {
-            serverBootstrap.group(bossGroup,workerGroup)
+            serverBootstrap
+                    .group(bossGroup,workerGroup)
                     .channel(NioServerSocketChannel.class)
                     .option(ChannelOption.SO_BACKLOG, 1024)
                     .childOption(ChannelOption.SO_KEEPALIVE, true)
@@ -53,19 +55,13 @@ public class NettyServer
                             cp.addLast("IMIdleStateHandler",new IMIdleStateHandler());
                             cp.addLast("Spliter",new Spliter());
                             cp.addLast("PacketCodecHandler", PacketCodecHandler.INSTANCE);
-                            cp.addLast("HeartBeatRequestPacket",HeartBeatRequestHandler.INSTANCE);
 
+                            cp.addLast("RegisterRequestHandler",RegisterRequestHandler.INSTANCE);
                             cp.addLast("LoginRequestHandler",LoginRequestHandler.INSTANCE);
                             cp.addLast("AuthHandler",AuthHandler.INSTANCE);
 
-                            //平行指令
-                            cp.addLast("LogoutResponseHandler",LogoutResponseHandler.INSTANCE);
-                            cp.addLast("MessageRequestHandler",MessageRequestHandler.INSTANCE);
-                            cp.addLast("JoinGroupRequestHandler",JoinGroupRequestHandler.INSTANCE);
-                            cp.addLast("QuitGroupRequestHandler",QuitGroupRequestHandler.INSTANCE);
-                            cp.addLast("CreateGroupRequestHandler", CreateGroupRequestHandler.INSTANCE);
-                            cp.addLast("GroupMessageRequestHandler", GroupMessageRequestHandler.INSTANCE);
-                            cp.addLast("ListGroupMembersRequestHandler", ListGroupMembersRequestHandler.INSTANCE);
+                            //平行指令分发
+                            cp.addLast("DispatherHandler",DispatherHandler.INSTANCE);
                         }
                     });
             bindPort();

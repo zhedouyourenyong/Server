@@ -2,7 +2,7 @@ package com.im.my.protocol.response;
 
 import com.im.my.protocol.Packet;
 import com.im.my.protocol.command.Command;
-import com.im.my.session.Session;
+import com.im.my.model.Session;
 import lombok.Data;
 
 import java.util.List;

@@ -9,9 +9,7 @@ import lombok.Data;
 public class JoinGroupResponsePacket extends Packet
 {
     private String groupId;
-
-    private boolean success;
-
+    private Boolean success;
     private String reason;
 
     @Override

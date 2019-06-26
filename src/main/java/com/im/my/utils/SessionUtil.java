@@ -1,16 +1,14 @@
 package com.im.my.utils;
 
-import com.im.my.attribute.Attributes;
-import com.im.my.session.Session;
+import com.im.my.config.Attributes;
+import com.im.my.model.Session;
 import io.netty.channel.Channel;
 import io.netty.channel.group.ChannelGroup;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-/*
-* 会话管理
-* */
+
 public class SessionUtil
 {
     //也可以放在redis中
